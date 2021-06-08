@@ -1,78 +1,112 @@
-function getHistory(){
-	return document.getElementById("history-value").innerText;
+var canvas = document.getElementById('game');
+var context = canvas.getContext('2d');
+
+var grid = 16;
+var count = 0;
+  
+var snake = {
+  x: 160,
+  y: 160,
+  
+  dx: grid,
+  dy: 0,
+  
+  cells: [],
+  
+  maxCells: 4
+};
+var apple = {
+  x: 320,
+  y: 320
+};
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
 }
-function printHistory(num){
-	document.getElementById("history-value").innerText=num;
+
+function loop() {
+  requestAnimationFrame(loop);
+
+  if (++count < 4) {
+    return;
+  }
+
+  count = 0;
+  context.clearRect(0,0,canvas.width,canvas.height);
+
+  snake.x += snake.dx;
+  snake.y += snake.dy;
+
+  if (snake.x < 0) {
+    snake.x = canvas.width - grid;
+  }
+  else if (snake.x >= canvas.width) {
+    snake.x = 0;
+  }
+
+  if (snake.y < 0) {
+    snake.y = canvas.height - grid;
+  }
+  else if (snake.y >= canvas.height) {
+    snake.y = 0;
+  }
+
+  snake.cells.unshift({x: snake.x, y: snake.y});
+
+  if (snake.cells.length > snake.maxCells) {
+    snake.cells.pop();
+  }
+
+  context.fillStyle = 'red';
+  context.fillRect(apple.x, apple.y, grid-1, grid-1);
+
+  context.fillStyle = 'green';
+  snake.cells.forEach(function(cell, index) {
+    
+    context.fillRect(cell.x, cell.y, grid-1, grid-1);  
+
+    if (cell.x === apple.x && cell.y === apple.y) {
+      snake.maxCells++;
+
+      apple.x = getRandomInt(0, 25) * grid;
+      apple.y = getRandomInt(0, 25) * grid;
+    }
+
+    for (var i = index + 1; i < snake.cells.length; i++) {
+      
+      if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
+        snake.x = 160;
+        snake.y = 160;
+        snake.cells = [];
+        snake.maxCells = 4;
+        snake.dx = grid;
+        snake.dy = 0;
+
+        apple.x = getRandomInt(0, 25) * grid;
+        apple.y = getRandomInt(0, 25) * grid;
+      }
+    }
+  });
 }
-function getOutput(){
-	return document.getElementById("output-value").innerText;
-}
-function printOutput(num){
-	if(num==""){
-		document.getElementById("output-value").innerText=num;
-	}
-	else{
-		document.getElementById("output-value").innerText=getFormattedNumber(num);
-	}	
-}
-function getFormattedNumber(num){
-	if(num=="-"){
-		return "";
-	}
-	var n = Number(num);
-	var value = n.toLocaleString("en");
-	return value;
-}
-function reverseNumberFormat(num){
-	return Number(num.replace(/,/g,''));
-}
-var operator = document.getElementsByClassName("operator");
-for(var i =0;i<operator.length;i++){
-	operator[i].addEventListener('click',function(){
-		if(this.id=="clear"){
-			printHistory("");
-			printOutput("");
-		}
-		else if(this.id=="backspace"){
-			var output=reverseNumberFormat(getOutput()).toString();
-			if(output){//if output has a value
-				output= output.substr(0,output.length-1);
-				printOutput(output);
-			}
-		}
-		else{
-			var output=getOutput();
-			var history=getHistory();
-			if(output==""&&history!=""){
-				if(isNaN(history[history.length-1])){
-					history= history.substr(0,history.length-1);
-				}
-			}
-			if(output!="" || history!=""){
-				output= output==""?output:reverseNumberFormat(output);
-				history=history+output;
-				if(this.id=="="){
-					var result=eval(history);
-					printOutput(result);
-					printHistory("");
-				}
-				else{
-					history=history+this.id;
-					printHistory(history);
-					printOutput("");
-				}
-			}
-		}
-		
-	});
-}
-var number = document.getElementsByClassName("number");
-for(var i =0;i<number.length;i++){
-	number[i].addEventListener('click',function(){
-		var output=reverseNumberFormat(getOutput());
-		if(output!=NaN){ //if output is a number
-			output=output+this.id;
-			printOutput(output);
-		}
-	});
-}
+
+document.addEventListener('keydown', function(e) {
+  
+  if (e.which === 37 && snake.dx === 0) {
+    snake.dx = -grid;
+    snake.dy = 0;
+  }
+  else if (e.which === 38 && snake.dy === 0) {
+    snake.dy = -grid;
+    snake.dx = 0;
+  }
+  else if (e.which === 39 && snake.dx === 0) {
+    snake.dx = grid;
+    snake.dy = 0;
+  }
+  else if (e.which === 40 && snake.dy === 0) {
+    snake.dy = grid;
+    snake.dx = 0;
+  }
+});
+
+requestAnimationFrame(loop);
