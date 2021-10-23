@@ -3,6 +3,10 @@
   src: url(fonts/raleway-reg.ttf);
 }
 
+body {
+  font-family: raleway-regular;
+}
+
 .logo > a {
   float: left;
   font-family: raleway-regular;
