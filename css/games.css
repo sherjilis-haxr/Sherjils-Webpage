@@ -1,15 +1,14 @@
 @font-face {
-  font-family: raleway-regular;
-  src: url(fonts/raleway-reg.ttf);
-}
-
-html {
+        font-family: raleway-regular;
+        src: url(fonts/raleway-reg.ttf);
+      }
+body {
   font-family: raleway-regular;
 }
 
 .logo > a {
   float: left;
-  font-family: raleway-regular;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 50px;
   color: white;
   text-decoration: none;
@@ -61,7 +60,7 @@ html {
 }
 
 .phrase {
-  font-family: raleway-regular;
+  font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
   text-align: center;
   padding: 205px;
@@ -85,7 +84,7 @@ html {
 }
 
 #explore {
-  font-family: raleway-regular;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 50px;
   width: 230px;
   text-align: center;
@@ -141,9 +140,6 @@ html {
         #Sherjil's_web {
         background-position: right;
         }
-          h2 {
-            color: rgb(255, 255, 255);
-        }
         .navbar {
   float: right;
   font-family: monospace;
@@ -153,4 +149,7 @@ html {
 }
         .navbar {
             color rgb(35, 39, 42);
+        }
+        #title {
+            color rgb(255, 155, 155);
         }
