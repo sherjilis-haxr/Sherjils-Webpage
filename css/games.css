@@ -3,7 +3,7 @@
   src: url(fonts/raleway-reg.ttf);
 }
 
-.body {
+html {
   font-family: raleway-regular;
 }
 
